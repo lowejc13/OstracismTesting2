@@ -46,25 +46,32 @@ $(function() {
   // Above were the basic parameters you can adjust using the instructions. The remaining code is also annotated, but we do not recommend changing it, unless you are comfortable with web programming.
   // -------------------
   
-//**Slide:** **participant**
-  function init_participant() {
+ // **Slide:** **Username**       
+  // Note: Only alphanumeric usernames without spaces are accepted
+  
+  function init_name() {
 
-  	$('#participant').show();
+  	$('#name').show();
 
     
-  	$('#submit_participant').on('click',function() {
+  	$('#submit_username').on('click',function() {
 
   		var error = 0;
-  		var uname = $('#participant').val();
+  		var uname = $('#username').val();
 
   		if(uname == "") {
   			error = 1;
   			errormsg = 'Please enter text';
   			uname = "undefined";
   		}
+  		if(not_alphanumeric(uname)) {
+  			error = 1;
+  			errormsg = 'Please only letters (and no spaces)';
+  		}  		
+
   		if(error == 0) {
 			$('#name').hide();
-			window.participant = $('#participant').val();
+			window.username = $('#username').val();
   			init_avatar();  			
   		} else {
   			alertify.log(errormsg,"error");

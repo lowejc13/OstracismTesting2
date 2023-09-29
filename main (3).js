@@ -46,16 +46,16 @@ $(function() {
   // Above were the basic parameters you can adjust using the instructions. The remaining code is also annotated, but we do not recommend changing it, unless you are comfortable with web programming.
   // -------------------
   
-//**Slide:** **RA Screen**
-  function init_participant number() {
+//**Slide:** **participant**
+  function init_participant() {
 
-  	$('#participant number').show();
+  	$('#participant').show();
 
     
-  	$('#submit_participant number').on('click',function() {
+  	$('#submit_participant').on('click',function() {
 
   		var error = 0;
-  		var uname = $('#participant number').val();
+  		var uname = $('#participant').val();
 
   		if(uname == "") {
   			error = 1;
@@ -64,7 +64,7 @@ $(function() {
   		}
   		if(error == 0) {
 			$('#name').hide();
-			window.username = $('#username').val();
+			window.participant = $('#participant').val();
   			init_avatar();  			
   		} else {
   			alertify.log(errormsg,"error");

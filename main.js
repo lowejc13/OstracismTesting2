@@ -4,9 +4,11 @@
 // The following parameters are necessary to adjust: number of avatar images, and the redirect link at the end of the study. All other parameters have a default option and adjustments are optional.
 
 $(function() {
+
   // **Parameters**
   // ------------
-  function set_settings() {
+  
+ function set_settings() {
     window.settings = [];
 
 	  // **Number** **of** **Avatar** **Images**
@@ -43,59 +45,65 @@ $(function() {
   // -------------------
   // Above were the basic parameters you can adjust using the instructions. The remaining code is also annotated, but we do not recommend changing it, unless you are comfortable with web programming.
   // -------------------
-
-
-  // **Slide:** **Intro**
+  
+  
+  // **Slide:** **Intro**     
   // With instructions regarding the task. The intro container is shown, the continue calls the next slide when clicked.
   function init_intro() {
   	$('#intro').show();
   	$('#submit_intro').on('click',function() {
 			$('#intro').hide();
-  		init_name();
-  	});
+  			init_name();  			
+  	});	
   }
+  
 
-  // **Slide:** **Username**
+  // **Slide:** **Username**       
   // Note: Only alphanumeric usernames without spaces are accepted
-
+  
   function init_name() {
 
   	$('#name').show();
+
+    
   	$('#submit_username').on('click',function() {
+
   		var error = 0;
   		var uname = $('#username').val();
 
   		if(uname == "") {
-  		  error = 1;
-  		  errormsg = 'Please enter text';
-  		  uname = "undefined";
+  			error = 1;
+  			errormsg = 'Please enter text';
+  			uname = "undefined";
   		}
   		if(not_alphanumeric(uname)) {
   			error = 1;
-  		  errormsg = 'Please only letters (and no spaces)';
-  		}
+  			errormsg = 'Please only letters (and no spaces)';
+  		}  		
+
   		if(error == 0) {
-        $('#name').hide();
-        window.username = $('#username').val();
-        init_avatar();
-      } else {
-        alertify.log(errormsg,"error");
+			$('#name').hide();
+			window.username = $('#username').val();
+  			init_avatar();  			
+  		} else {
+  			alertify.log(errormsg,"error");
   		}
+
+
   	});
   }
 
-
-  // **Slide:** **Avatar**
+  // **Slide:** **Avatar**       
   // Avatar slide in which the participant is asked to select an avatar
-
+   
   function init_avatar() {
   	$('#avatar').show();
 
-    var avatars = window.settings.numberofavatars;
-  	for(var i=0; i<avatars; i++)
-  	{
+    var avatars = window.settings.numberofavatars;    
+  	for(var i=0; i<avatars; i++) 
+  	{ 
   		$('.avatars').append('<img id="avatar_' + i+ '" src="avatars/avatar_' + i + '.png" class="avatar" />');
-  	}
+  	} 
 
   	$('.avatar').on('click', function() {
   		$('.avatar').removeClass('selected');
@@ -104,18 +112,19 @@ $(function() {
 
     	$('#submit_avatar').on('click',function() {
     		if($('.selected').length == 1) {
-          $('#avatar').hide();
-          window.avatar = $('.selected').attr('id');
-          window.avatarexport = /avatar_([^\s]+)/.exec(window.avatar)[1];
-    			init_text();
+  			$('#avatar').hide();
+  			window.avatar = $('.selected').attr('id');
+  			window.avatarexport = /avatar_([^\s]+)/.exec(window.avatar)[1];
+    			init_text();  			
     		} else {
     			alertify.log("Please select an avatar","error");
     		}
     	});
+
   }
 
 
-  // **Slide:** **Description**
+  // **Slide:** **Description**   
   function init_text() {
   	$('#text').show();
 
@@ -124,60 +133,68 @@ $(function() {
   	});
 
   	$('#submit_text').on('click',function() {
+
   		var error = 0;
   		if($('#description').val() == "") {
   			error = 1;
   			errormsg = 'Please enter text';
   		}
   		if($('#description').val() !== "" && $('#description').val().length < 140) {
+		
   			error = 1;
   			errormsg = 'Please write a bit more';
 			}
   		if($('#description').val().length > 401) {
+  		
   			error = 1;
   			errormsg = 'Please enter less text';
-  		}
+  		}  		
   		if(error == 0) {
   			$('#text').hide();
   			window.description = $('#description').val();
-    		init_fb_intro();
+    			init_fb_intro();  			
     		} else {
     			alertify.log(errormsg,"error");
     		}
-  	});
+  	});  	
   }
 
 
-  // **Slide:** **Instructions**
+  // **Slide:** **Instructions**   
   function init_fb_intro() {
   	$('#fb_intro').show();
+	
   	$('#submit_fb_intro').on('click',function() {
+
 			$('#fb_intro').hide();
- 			init_fb_login();
-  	});
+ 			init_fb_login();  			
+
+  	});	
   }
 
 
-  // **Slide:** **Login** **Screen**
-  // Participant can continue after 8000ms = 8s
+  // **Slide:** **Login** **Screen**   
+  // Participant can continue after 8000ms = 8s      
   function init_fb_login() {
   	$('#fb_login').show();
+	
 
   	setTimeout(function() {
   		$('#msg_all_done').show();
   		$("#loader").hide();
   	}, 8000);
-
+	
   	$('#submit_fb_login').on('click',function() {
 			$('#fb_login').hide();
-  		init_task();
-  	});
+  			init_task();  			
+  	});	
   }
 
-  // Disables the like/dislike buttons and notifies the user that the time is up.
+// Disables the like/dislike buttons and notifies the user that the time is up.
   function DeactivateLike() {
 	  setTimeout(function() { 
       $('.btn-like').attr("disabled", true);
+	    //alert("This part of the study has now ended. Please return to the survey tab in your browser.");
     }, 2000);
   }
   function DeactivateDisLike(){
@@ -185,97 +202,99 @@ $(function() {
       $('.btn-Dislike').attr("disabled", true);
     }, 3000);
   }
-
-  // **Slide:** **Task**
+  
+  // **Slide:** **Task**   
   function init_task() {
+
     $('#task').show();
-    shortcut.add("Backspace",function() {});
 
-    // Disables the like/dislike buttons once the time is up and notifies the usr.
-    jQuery("#countdown").countDown({
-      startNumber: window.settings.tasklength/1000, // in seconds
-      callBack: function(me) {
-        console.log('over');
+	shortcut.add("Backspace",function() {});      
+
+  	jQuery("#countdown").countDown({
+  		startNumber: window.settings.tasklength/1000, // in seconds
+  		callBack: function(me) {
+  			console.log('over');
         $('#timer').text('00:00');
-        DeactivateLike();
-        DeactivateDisLike();	
-      }
-    });
-
-    users = {
-      "posts" : [
-      {
-        "avatar": 'avatars/' + window.avatar + '.png',
-        "username": window.username,
-        "text": window.description,
-        "likes": window.settings.condition_likes,
-        "Dislikes":  window.settings.condition_Dislikes,
-        "usernames": window.settings.likes_by
-      }
-      ]
-    };
-
-    // Add user box to slide
-    var tpl = $('#usertmp').html(),html = Mustache.to_html(tpl, users);
-    $("#task").append(html);
-
-    // Add other boxes to slide
-    var tpl = $('#otherstmp').html(),html = Mustache.to_html(tpl, others);
-    $("#task").append(html);
-
+ DeactivateLike();
+        DeactivateDisLike();	  		
+	}
+  	});
+	   
+		users = {
+		  "posts" : [
+			{
+			  "avatar": 'avatars/' + window.avatar + '.png',
+			  "username": window.username,
+			  "text": window.description,
+			  "likes": window.settings.condition_likes,
+			  "Dislikes":  window.settings.condition_Dislikes,
+			  "usernames": window.settings.likes_by
+			}
+		  ]
+		};
+		
+    // Add user box to slide     
+	  var tpl = $('#usertmp').html(),html = Mustache.to_html(tpl, users);
+	  $("#task").append(html);
+	  
+    // Add other boxes to slide    
+	  var tpl = $('#otherstmp').html(),html = Mustache.to_html(tpl, others);
+	  $("#task").append(html);
+ 
     // Randomize order of other players boxes
     function reorder() {
-      var grp = $("#others").children();
-      var cnt = grp.length;
-      var temp, x;
-      for (var i = 0; i < cnt; i++) {
-        temp = grp[i];
-        x = Math.floor(Math.random() * cnt);
-        grp[i] = grp[x];
-        grp[x] = temp;
-      }
-      $(grp).remove();
-      $("#others").append($(grp));
+       var grp = $("#others").children();
+       var cnt = grp.length;
+
+       var temp,x;
+       for (var i = 0; i < cnt; i++) {
+           temp = grp[i];
+         x = Math.floor(Math.random() * cnt);
+         grp[i] = grp[x];
+         grp[x] = temp;
+     }
+     $(grp).remove();
+     $("#others").append($(grp));
     }
-    reorder();
+    reorder();    
 
     // When user receives likes
-    $('.userslikes').each(function() {
-      var that = $(this);
-      var usernames = $(this).data('usernames').split(",");
-      var times = $(this).data('likes').split(",");
+	  $('.userslikes').each(function() {
+  		var that = $(this);
+  		var usernames = $(this).data('usernames').split(",");
+  		var times = $(this).data('likes').split(",");
 
-      for(var i=0; i<times.length; i++) { 
-        times[i] = +times[i]; 
-        themsg = usernames[i] + " liked your post";
-        
-        setTimeout(function(themsg) {
-          that.text(parseInt(that.text()) + 1);
-          alertify.success(themsg)
-        }, times[i], themsg);
-      } 		
-    });
+  		for(var i=0; i<times.length; i++) 
+  		{ 
+  			times[i] = +times[i]; 
+  			
+  			themsg = usernames[i] + " liked your post";
 
+  			setTimeout(function(themsg) {
+  				that.text(parseInt(that.text()) + 1);
+  				alertify.success(themsg)
+
+  			}, times[i], themsg);
+  		} 		
+	  });
+	  
     // When others receive likes
-    $('.otherslikes').each(function() {
-      var that = $(this);
-      var times = $(this).data('likes').split(",");
-      for(var i=0; i<times.length; i++) {
-        if(times[i] ==  9999999) {
-          setTimeout(function () {
-            that.text(parseInt(that.text()) + 0);
-          }, times[i]);
-        }
-        else {
-          times[i] = +times[i];
-          setTimeout(function () {
-            that.text(parseInt(that.text()) + 1);
-          }, times[i]);
-        }
-      }
-    });
-
-      // When others receive Dislikes
+	  $('.otherslikes').each(function() {
+  		var that = $(this);
+  		var times = $(this).data('likes').split(",");
+  		
+  		for(var i=0; i<times.length; i++) 
+  		{ 
+  			times[i] = +times[i]; 
+  			
+  			setTimeout(function () {
+  				that.text(parseInt(that.text()) + 1);
+  			}, times[i]);
+  			
+  		} 
+	  });
+	 
+  // When others receive Dislikes
     $('.othersDislikes').each(function() {
       var that = $(this);
       var times = $(this).data('likes').split(",");
@@ -296,16 +315,13 @@ $(function() {
     });
 
     // Initialize like buttons
-    $('.btn-like').on('click', function() {
-      $(this).prev().text(parseInt($(this).prev().text()) + 1);
-      
+	  $('.btn-like').on('click', function() {
+		  $(this).prev().text(parseInt($(this).prev().text()) + 1);
       // Like buttons can only be clicked once
-      $(this).attr("disabled", true);
-      $(this).parent().parent().find('.btn-like').attr("disabled", true);
-    });
-
-
-    // Initialize Dislike buttons
+		  $(this).attr("disabled", true);
+	  });
+   
+// Initialize Dislike buttons
     $('.btn-Dislike').on('click', function() {
       $(this).prev().text(parseInt($(this).prev().text()) + 1);
       
@@ -313,15 +329,16 @@ $(function() {
       $(this).attr("disabled", true);
       $(this).parent().parent().find('.btn-Dislike').attr("disabled", true);
     });
-
-    // Initalize Masonry plugin
+    
+// Initalize Masonry plugin
     // For display of user and other players boxes in columns without gaps
-    $('#task').masonry({
-      itemSelector : '.entry',
-      columnWidth : 10
-    });
+		$('#task').masonry({
+		  itemSelector : '.entry',
+		  columnWidth : 10
+		});
 
-      // Redirect, default after 180000ms = 180s = 3min
+
+    // Redirect, default after 180000ms = 180s = 3min
     setTimeout(function() {
     
     $(window).unbind('beforeunload');

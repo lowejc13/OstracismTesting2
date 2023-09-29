@@ -335,22 +335,42 @@ $(function() {
     },window.settings.tasklength); // timing for task
   }
 
-  // Sets redirect link for string query, MUST ENCODE REDIRECT LINK
+  // Get URL parameters to set condition number and participant number
   function get_params() {
+  // participant number must be numeric
+    if(window.QueryString.p !== undefined && !isNaN(parseInt(window.QueryString.p))) {
+      window.participant = parseInt(window.QueryString.p);
+    } else {
+      window.participant = 0; // participant defaults to 0
+    }    
+    // redirect
     if(window.QueryString.redirect !== undefined && window.QueryString.redirect !== "") {
       window.redirect = decode(window.QueryString.redirect);
     } else {
-      window.redirect = window.settings.defaultredirect;
-    }
+	  window.redirect = window.settings.defaultredirect;
+	}
+	
+	var urlHasQuestionMark = (window.redirect.indexOf("?") > -1);
+	if(!urlHasQuestionMark) {
+		window.redirect = window.redirect+"?redir=1";
+	}
+	//alert(window.redirect);
 
-    var urlHasQuestionMark = (window.redirect.indexOf("?") > -1);
-
-    if(!urlHasQuestionMark) {
-      window.redirect = window.redirect+"?redir=1";
-    }
   }
 
-  // The variable QueryString contains the url parameters, i.e. condition no. and participant no.
+
+  // Function to check letters and numbers
+  // via http://www.w3resource.com/javascript/form/letters-numbers-field.php
+  function not_alphanumeric(inputtxt) {
+    var letterNumber = /^[0-9a-zA-Z]+$/;
+    if(inputtxt.match(letterNumber)) {
+        return false;
+      } else {
+        return true;
+      }
+  }
+
+// The variable QueryString contains the url parameters, i.e. condition no. and participant no.
   // via http://stackoverflow.com/a/979995
   window.QueryString = function () {
     var query_string = {};
@@ -369,21 +389,9 @@ $(function() {
       } else {
         query_string[pair[0]].push(pair[1]);
       }
-    }
+    } 
       return query_string;
   } ();
-
-
-  // Function to check letters and numbers
-  // via http://www.w3resource.com/javascript/form/letters-numbers-field.php
-  function not_alphanumeric(inputtxt) {
-    var letterNumber = /^[0-9a-zA-Z]+$/;
-    if(inputtxt.match(letterNumber)) {
-        return false;
-      } else {
-        return true;
-      }
-  }
 
   // Function to add extra zeros infront of numbers (used for the countdown)
   // via http://stackoverflow.com/a/6466243

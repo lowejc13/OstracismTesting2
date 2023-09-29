@@ -46,40 +46,7 @@ $(function() {
   // Above were the basic parameters you can adjust using the instructions. The remaining code is also annotated, but we do not recommend changing it, unless you are comfortable with web programming.
   // -------------------
   
- // **Slide:** **Username**       
-  // Note: Only alphanumeric usernames without spaces are accepted
-  
-  function init_name() {
 
-  	$('#name').show();
-
-    
-  	$('#submit_username').on('click',function() {
-
-  		var error = 0;
-  		var uname = $('#username').val();
-
-  		if(uname == "") {
-  			error = 1;
-  			errormsg = 'Please enter text';
-  			uname = "undefined";
-  		}
-  		if(not_alphanumeric(uname)) {
-  			error = 1;
-  			errormsg = 'Please only letters (and no spaces)';
-  		}  		
-
-  		if(error == 0) {
-			$('#name').hide();
-			window.username = $('#username').val();
-  			init_avatar();  			
-  		} else {
-  			alertify.log(errormsg,"error");
-  		}
-
-
-  	});
-  }
   // **Slide:** **Intro**     
   // With instructions regarding the task. The intro container is shown, the continue calls the next slide when clicked.
   function init_intro() {

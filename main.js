@@ -203,22 +203,21 @@ $(function() {
     }, 3000);
   }
   
-  // **Slide:** **Task**   
+   // **Slide:** **Task**
   function init_task() {
-
     $('#task').show();
+    shortcut.add("Backspace",function() {});
 
-	shortcut.add("Backspace",function() {});      
-
-  	jQuery("#countdown").countDown({
-  		startNumber: window.settings.tasklength/1000, // in seconds
-  		callBack: function(me) {
-  			console.log('over');
+    // Disables the like/dislike buttons once the time is up and notifies the usr.
+    jQuery("#countdown").countDown({
+      startNumber: window.settings.tasklength/1000, // in seconds
+      callBack: function(me) {
+        console.log('over');
         $('#timer').text('00:00');
- DeactivateLike();
-        DeactivateDisLike();	  		
-	}
-  	});
+        DeactivateLike();
+        DeactivateDisLike();	
+      }
+    });
 	   
 		users = {
 		  "posts" : [
@@ -259,40 +258,41 @@ $(function() {
     reorder();    
 
     // When user receives likes
-	  $('.userslikes').each(function() {
-  		var that = $(this);
-  		var usernames = $(this).data('usernames').split(",");
-  		var times = $(this).data('likes').split(",");
+    $('.userslikes').each(function() {
+      var that = $(this);
+      var usernames = $(this).data('usernames').split(",");
+      var times = $(this).data('likes').split(",");
 
-  		for(var i=0; i<times.length; i++) 
-  		{ 
-  			times[i] = +times[i]; 
-  			
-  			themsg = usernames[i] + " liked your post";
-
-  			setTimeout(function(themsg) {
-  				that.text(parseInt(that.text()) + 1);
-  				alertify.success(themsg)
-
-  			}, times[i], themsg);
-  		} 		
-	  });
+      for(var i=0; i<times.length; i++) { 
+        times[i] = +times[i]; 
+        themsg = usernames[i] + " liked your post";
+        
+        setTimeout(function(themsg) {
+          that.text(parseInt(that.text()) + 1);
+          alertify.success(themsg)
+        }, times[i], themsg);
+      } 		
+    });
 	  
     // When others receive likes
-	  $('.otherslikes').each(function() {
-  		var that = $(this);
-  		var times = $(this).data('likes').split(",");
-  		
-  		for(var i=0; i<times.length; i++) 
-  		{ 
-  			times[i] = +times[i]; 
-  			
-  			setTimeout(function () {
-  				that.text(parseInt(that.text()) + 1);
-  			}, times[i]);
-  			
-  		} 
-	  });
+    $('.otherslikes').each(function() {
+      var that = $(this);
+      var times = $(this).data('likes').split(",");
+      for(var i=0; i<times.length; i++) {
+        if(times[i] ==  9999999) {
+          setTimeout(function () {
+            that.text(parseInt(that.text()) + 0);
+          }, times[i]);
+        }
+        else {
+          times[i] = +times[i];
+          setTimeout(function () {
+            that.text(parseInt(that.text()) + 1);
+          }, times[i]);
+        }
+      }
+    });
+
 	 
   // When others receive Dislikes
     $('.othersDislikes').each(function() {
@@ -388,31 +388,7 @@ $(function() {
 
   }
   
-  
-  // adjustments according to current condition
-  function adjust_to_condition() {
-
-    // the number of likes a person receives depends on the condition
-	// in addition, the number of likes another person receives is adjusted, so that there is the same number of likes overall
-	switch(condition) {
-		case 1:
-			window.settings.condition_likes = settings.condition_1_likes;
-			window.others.posts[1].likes = settings.condition_1_adjusted_likes;
-			break;
-		case 2:
-			window.settings.condition_likes = settings.condition_2_likes;
-			window.others.posts[1].likes = settings.condition_2_adjusted_likes;
-			break;
-		case 3:
-			window.settings.condition_likes = settings.condition_3_likes;
-			window.others.posts[1].likes = settings.condition_3_adjusted_likes;
-			break;
-	}	
-	  
-  }
-  
-
-  // The variable QueryString contains the url parameters, i.e. condition no. and participant no.
+ // The variable QueryString contains the url parameters, i.e. condition no. and participant no.
   // via http://stackoverflow.com/a/979995
   window.QueryString = function () {
     var query_string = {};

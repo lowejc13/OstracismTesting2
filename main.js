@@ -4,10 +4,8 @@
 // The following parameters are necessary to adjust: number of avatar images, and the redirect link at the end of the study. All other parameters have a default option and adjustments are optional.
 
 $(function() {
-
   // **Parameters**
   // ------------
-  
  function set_settings() {
     window.settings = [];
 
@@ -57,7 +55,6 @@ $(function() {
   	});	
   }
   
-
   // **Slide:** **Username**       
   // Note: Only alphanumeric usernames without spaces are accepted
   

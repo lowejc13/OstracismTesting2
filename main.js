@@ -6,7 +6,7 @@
 $(function() {
   // **Parameters**
   // ------------
- function set_settings() {
+  function set_settings() {
     window.settings = [];
 
 	  // **Number** **of** **Avatar** **Images**
@@ -43,64 +43,59 @@ $(function() {
   // -------------------
   // Above were the basic parameters you can adjust using the instructions. The remaining code is also annotated, but we do not recommend changing it, unless you are comfortable with web programming.
   // -------------------
-  
-  
-  // **Slide:** **Intro**     
+
+
+  // **Slide:** **Intro**
   // With instructions regarding the task. The intro container is shown, the continue calls the next slide when clicked.
   function init_intro() {
   	$('#intro').show();
   	$('#submit_intro').on('click',function() {
 			$('#intro').hide();
-  			init_name();  			
-  	});	
+  		init_name();
+  	});
   }
-  
-  // **Slide:** **Username**       
+
+  // **Slide:** **Username**
   // Note: Only alphanumeric usernames without spaces are accepted
-  
+
   function init_name() {
 
   	$('#name').show();
-
-    
   	$('#submit_username').on('click',function() {
-
   		var error = 0;
   		var uname = $('#username').val();
 
   		if(uname == "") {
-  			error = 1;
-  			errormsg = 'Please enter text';
-  			uname = "undefined";
+  		  error = 1;
+  		  errormsg = 'Please enter text';
+  		  uname = "undefined";
   		}
   		if(not_alphanumeric(uname)) {
   			error = 1;
-  			errormsg = 'Please only letters (and no spaces)';
-  		}  		
-
-  		if(error == 0) {
-			$('#name').hide();
-			window.username = $('#username').val();
-  			init_avatar();  			
-  		} else {
-  			alertify.log(errormsg,"error");
+  		  errormsg = 'Please only letters (and no spaces)';
   		}
-
-
+  		if(error == 0) {
+        $('#name').hide();
+        window.username = $('#username').val();
+        init_avatar();
+      } else {
+        alertify.log(errormsg,"error");
+  		}
   	});
   }
 
-  // **Slide:** **Avatar**       
+
+  // **Slide:** **Avatar**
   // Avatar slide in which the participant is asked to select an avatar
-   
+
   function init_avatar() {
   	$('#avatar').show();
 
-    var avatars = window.settings.numberofavatars;    
-  	for(var i=0; i<avatars; i++) 
-  	{ 
+    var avatars = window.settings.numberofavatars;
+  	for(var i=0; i<avatars; i++)
+  	{
   		$('.avatars').append('<img id="avatar_' + i+ '" src="avatars/avatar_' + i + '.png" class="avatar" />');
-  	} 
+  	}
 
   	$('.avatar').on('click', function() {
   		$('.avatar').removeClass('selected');
@@ -109,19 +104,18 @@ $(function() {
 
     	$('#submit_avatar').on('click',function() {
     		if($('.selected').length == 1) {
-  			$('#avatar').hide();
-  			window.avatar = $('.selected').attr('id');
-  			window.avatarexport = /avatar_([^\s]+)/.exec(window.avatar)[1];
-    			init_text();  			
+          $('#avatar').hide();
+          window.avatar = $('.selected').attr('id');
+          window.avatarexport = /avatar_([^\s]+)/.exec(window.avatar)[1];
+    			init_text();
     		} else {
     			alertify.log("Please select an avatar","error");
     		}
     	});
-
   }
 
 
-  // **Slide:** **Description**   
+  // **Slide:** **Description**
   function init_text() {
   	$('#text').show();
 
@@ -130,68 +124,60 @@ $(function() {
   	});
 
   	$('#submit_text').on('click',function() {
-
   		var error = 0;
   		if($('#description').val() == "") {
   			error = 1;
   			errormsg = 'Please enter text';
   		}
   		if($('#description').val() !== "" && $('#description').val().length < 140) {
-		
   			error = 1;
   			errormsg = 'Please write a bit more';
 			}
   		if($('#description').val().length > 401) {
-  		
   			error = 1;
   			errormsg = 'Please enter less text';
-  		}  		
+  		}
   		if(error == 0) {
   			$('#text').hide();
   			window.description = $('#description').val();
-    			init_fb_intro();  			
+    		init_fb_intro();
     		} else {
     			alertify.log(errormsg,"error");
     		}
-  	});  	
+  	});
   }
 
 
-  // **Slide:** **Instructions**   
+  // **Slide:** **Instructions**
   function init_fb_intro() {
   	$('#fb_intro').show();
-	
   	$('#submit_fb_intro').on('click',function() {
-
 			$('#fb_intro').hide();
- 			init_fb_login();  			
-
-  	});	
+ 			init_fb_login();
+  	});
   }
 
 
-  // **Slide:** **Login** **Screen**   
-  // Participant can continue after 8000ms = 8s      
+  // **Slide:** **Login** **Screen**
+  // Participant can continue after 8000ms = 8s
   function init_fb_login() {
   	$('#fb_login').show();
-	
 
   	setTimeout(function() {
   		$('#msg_all_done').show();
   		$("#loader").hide();
   	}, 8000);
-	
+
   	$('#submit_fb_login').on('click',function() {
 			$('#fb_login').hide();
-  			init_task();  			
-  	});	
+  		init_task();
+  	});
   }
 
-// Disables the like/dislike buttons and notifies the user that the time is up.
+  // Disables the like/dislike buttons and notifies the user that the time is up.
   function DeactivateLike() {
 	  setTimeout(function() { 
       $('.btn-like').attr("disabled", true);
-	    //alert("This part of the study has now ended. Please return to the survey tab in your browser.");
     }, 2000);
   }
   function DeactivateDisLike(){
@@ -199,8 +185,8 @@ $(function() {
       $('.btn-Dislike').attr("disabled", true);
     }, 3000);
   }
-  
-   // **Slide:** **Task**
+
+  // **Slide:** **Task**
   function init_task() {
     $('#task').show();
     shortcut.add("Backspace",function() {});
@@ -215,44 +201,43 @@ $(function() {
         DeactivateDisLike();	
       }
     });
-	   
-		users = {
-		  "posts" : [
-			{
-			  "avatar": 'avatars/' + window.avatar + '.png',
-			  "username": window.username,
-			  "text": window.description,
-			  "likes": window.settings.condition_likes,
-			  "Dislikes":  window.settings.condition_Dislikes,
-			  "usernames": window.settings.likes_by
-			}
-		  ]
-		};
-		
-    // Add user box to slide     
-	  var tpl = $('#usertmp').html(),html = Mustache.to_html(tpl, users);
-	  $("#task").append(html);
-	  
-    // Add other boxes to slide    
-	  var tpl = $('#otherstmp').html(),html = Mustache.to_html(tpl, others);
-	  $("#task").append(html);
- 
+
+    users = {
+      "posts" : [
+      {
+        "avatar": 'avatars/' + window.avatar + '.png',
+        "username": window.username,
+        "text": window.description,
+        "likes": window.settings.condition_likes,
+        "Dislikes":  window.settings.condition_Dislikes,
+        "usernames": window.settings.likes_by
+      }
+      ]
+    };
+
+    // Add user box to slide
+    var tpl = $('#usertmp').html(),html = Mustache.to_html(tpl, users);
+    $("#task").append(html);
+
+    // Add other boxes to slide
+    var tpl = $('#otherstmp').html(),html = Mustache.to_html(tpl, others);
+    $("#task").append(html);
+
     // Randomize order of other players boxes
     function reorder() {
-       var grp = $("#others").children();
-       var cnt = grp.length;
-
-       var temp,x;
-       for (var i = 0; i < cnt; i++) {
-           temp = grp[i];
-         x = Math.floor(Math.random() * cnt);
-         grp[i] = grp[x];
-         grp[x] = temp;
-     }
-     $(grp).remove();
-     $("#others").append($(grp));
+      var grp = $("#others").children();
+      var cnt = grp.length;
+      var temp, x;
+      for (var i = 0; i < cnt; i++) {
+        temp = grp[i];
+        x = Math.floor(Math.random() * cnt);
+        grp[i] = grp[x];
+        grp[x] = temp;
+      }
+      $(grp).remove();
+      $("#others").append($(grp));
     }
-    reorder();    
+    reorder();
 
     // When user receives likes
     $('.userslikes').each(function() {
@@ -270,7 +255,7 @@ $(function() {
         }, times[i], themsg);
       } 		
     });
-	  
+
     // When others receive likes
     $('.otherslikes').each(function() {
       var that = $(this);
@@ -290,8 +275,7 @@ $(function() {
       }
     });
 
-	 
-  // When others receive Dislikes
+      // When others receive Dislikes
     $('.othersDislikes').each(function() {
       var that = $(this);
       var times = $(this).data('likes').split(",");
@@ -312,13 +296,16 @@ $(function() {
     });
 
     // Initialize like buttons
-	  $('.btn-like').on('click', function() {
-		  $(this).prev().text(parseInt($(this).prev().text()) + 1);
+    $('.btn-like').on('click', function() {
+      $(this).prev().text(parseInt($(this).prev().text()) + 1);
+      
       // Like buttons can only be clicked once
-		  $(this).attr("disabled", true);
-	  });
-   
-// Initialize Dislike buttons
+      $(this).attr("disabled", true);
+      $(this).parent().parent().find('.btn-like').attr("disabled", true);
+    });
+
+
+    // Initialize Dislike buttons
     $('.btn-Dislike').on('click', function() {
       $(this).prev().text(parseInt($(this).prev().text()) + 1);
       
@@ -326,66 +313,43 @@ $(function() {
       $(this).attr("disabled", true);
       $(this).parent().parent().find('.btn-Dislike').attr("disabled", true);
     });
-    
-// Initalize Masonry plugin
+
+    // Initalize Masonry plugin
     // For display of user and other players boxes in columns without gaps
-		$('#task').masonry({
-		  itemSelector : '.entry',
-		  columnWidth : 10
-		});
-
-
-    // Redirect, default after 180000ms = 180s = 3min
-    setTimeout(function() {
-    
-    $(window).unbind('beforeunload');
-    
-    $('#final-continue').show();
-
-    $('#timer').text('00:00');
-    
-    $('#final-continue').on('click', function() {
-
-      // Redirect link
-      location.href = window.redirect+'&p='+window.participant+'&c='+window.condition+'&u='+encodeURI(window.username)+'&av='+window.avatarexport+'&d='+encodeURI(window.description);
-
+    $('#task').masonry({
+      itemSelector : '.entry',
+      columnWidth : 10
     });
-    
+
+    Redirect, default after 180000ms = 180s = 3min
+    setTimeout(function() {
+
+      $(window).unbind('beforeunload');
+      $('#final-continue').show();
+      $('#timer').text('00:00');
+      $('#final-continue').on('click', function() {
+        // Redirect link
+        location.href = window.redirect+'&p='+window.participant+'&c='+window.condition+'&u='+encodeURI(window.username)+'&av='+window.avatarexport+'&d='+encodeURI(window.description); 
+      });
     },window.settings.tasklength); // timing for task
-
   }
-	
 
-  // Get URL parameters to set condition number and participant number
+  // Sets redirect link for string query, MUST ENCODE REDIRECT LINK
   function get_params() {
-    // condition number must be 1, 2, or 3
-    if(window.QueryString.c !== undefined && !isNaN(parseInt(window.QueryString.c)) && parseInt(window.QueryString.c) > 0 && parseInt(window.QueryString.c) < 4) {
-      window.condition = parseInt(window.QueryString.c);
-    } else {
-      window.condition = 3; // condition defaults to 1
-    }
-    // participant number must be numeric
-    if(window.QueryString.p !== undefined && !isNaN(parseInt(window.QueryString.p))) {
-      window.participant = parseInt(window.QueryString.p);
-    } else {
-      window.participant = 0; // participant defaults to 0
-    }    
-    // redirect
     if(window.QueryString.redirect !== undefined && window.QueryString.redirect !== "") {
       window.redirect = decode(window.QueryString.redirect);
     } else {
-	  window.redirect = window.settings.defaultredirect;
-	}
-	
-	var urlHasQuestionMark = (window.redirect.indexOf("?") > -1);
-	if(!urlHasQuestionMark) {
-		window.redirect = window.redirect+"?redir=1";
-	}
-	//alert(window.redirect);
+      window.redirect = window.settings.defaultredirect;
+    }
 
+    var urlHasQuestionMark = (window.redirect.indexOf("?") > -1);
+
+    if(!urlHasQuestionMark) {
+      window.redirect = window.redirect+"?redir=1";
+    }
   }
-  
- // The variable QueryString contains the url parameters, i.e. condition no. and participant no.
+
+  // The variable QueryString contains the url parameters, i.e. condition no. and participant no.
   // via http://stackoverflow.com/a/979995
   window.QueryString = function () {
     var query_string = {};
@@ -404,7 +368,7 @@ $(function() {
       } else {
         query_string[pair[0]].push(pair[1]);
       }
-    } 
+    }
       return query_string;
   } ();
 
@@ -415,28 +379,27 @@ $(function() {
     var letterNumber = /^[0-9a-zA-Z]+$/;
     if(inputtxt.match(letterNumber)) {
         return false;
-      } else { 
-        return true; 
+      } else {
+        return true;
       }
   }
-
 
   // Function to add extra zeros infront of numbers (used for the countdown)
   // via http://stackoverflow.com/a/6466243
   function pad (str, max) {
-    return str.length < max ? pad("0" + str, max) : str;
+      return str.length < max ? pad("0" + str, max) : str;
   }
 
   // Function for encoding and decoding URLs
   // via http://meyerweb.com/eric/tools/dencoder/
   function encode(unencoded) {
-	return encodeURIComponent(unencoded).replace(/'/g,"%27").replace(/"/g,"%22");	
+    return encodeURIComponent(unencoded).replace(/'/g,"%27").replace(/"/g,"%22");
   }
   function decode(encoded) {
-	return decodeURIComponent(encoded.replace(/\+/g,  " "));
+    return decodeURIComponent(encoded.replace(/\+/g,  " "));
   }
 
-  
+
   // Simple Countdown
   // via http://davidwalsh.name/jquery-countdown-plugin
   jQuery.fn.countDown = function(settings,to) {
@@ -449,7 +412,7 @@ $(function() {
       callBack: function() { }
     }, settings);
     return this.each(function() {
-      if(!to && to != settings.endNumber) { to = settings.startNumber; }  
+      if(!to && to != settings.endNumber) { to = settings.startNumber; }
       jQuery(this).children('.secs').text(to);
       jQuery(this).animate({
         fontSize: settings.endFontSize
@@ -469,17 +432,15 @@ $(function() {
   };
 
   // Prevent that participants accidentally exit the experiment by disabling F5 and backspace keys
-  shortcut.add("f5",function() {});  
-  $(window).bind('beforeunload', function(){
+  shortcut.add("f5",function() {});
+  $(window).bind('beforeunload', function() {
     return 'Are you sure you want to quit the experiment completely?';
-  });   
+  });
 
-  // Set Settings, get Participant No. and Condition No.
+  // Set Settings
   set_settings();
   get_params();
-  adjust_to_condition();
 
   // Start with the intro slide
   init_intro();
-
 });
